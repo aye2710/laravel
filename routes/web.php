@@ -2,34 +2,70 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckTimeAccess;
+use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home.index');
 });
 
-// Product
-Route::prefix('product')->middleware(CheckTimeAccess::class)->group(function () {
-    Route::controller(ProductController::class)->group(function () {
-        Route::get('/', 'index')->name('product');
-        Route::get('/add', 'create')->name('add');
-        Route::get('/detail/{id?}', 'getDetail')->name('detail');
-        Route::post('/store', 'store');
-        Route::get('/login', 'login');
-        Route::post('/checkLogin', 'checkLogin');
-        Route::get('/register', 'register');
-        Route::post('/checkRegister', 'checkRegister');
-    });
+/*
+|--------------------------------------------------------------------------
+| PRODUCT ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::prefix('auth')->controller(AuthController::class)->group(function () {
+    Route::get('/signin', 'signIn')->name('signin');
+    Route::post('/check-signin', 'checkSignIn')->name('check.signin');
 });
 
-// Page Not Found
+
+
+
+// // Các route KHÔNG bị check time (login, register)
+// Route::prefix('product')->controller(ProductController::class)->group(function () {
+//     Route::get('/login', 'login');
+//     Route::post('/checkLogin', 'checkLogin');
+//     Route::get('/register', 'register');
+//     Route::post('/checkRegister', 'checkRegister');
+// });
+
+// // Các route BỊ check time
+// Route::prefix('product')
+//     ->middleware(CheckTimeAccess::class)
+//     ->controller(ProductController::class)
+//     ->group(function () {
+//         Route::get('/', 'index')->name('product');
+//         Route::get('/add', 'create')->name('add');
+//         Route::get('/detail/{id?}', 'getDetail')->name('detail');
+//         Route::post('/store', 'store');
+//     });
+
+/*
+|--------------------------------------------------------------------------
+| PAGE NOT FOUND
+|--------------------------------------------------------------------------
+*/
 Route::fallback(function () {
-    return View("error.404");
+    return view('error.404');
 });
+
+/*
+|--------------------------------------------------------------------------
+| OTHER ROUTES
+|--------------------------------------------------------------------------
+*/
 
 // Sinh viên
-Route::get('/sinhvien/{name?}/{mssv?}', function (?string $name = "Luong Xuan Hieu", ?string $mssv = "123456") {
-    return view('sinhvien.index', ['name' => $name, 'mssv' => $mssv]);
+Route::get('/sinhvien/{name?}/{mssv?}', function (
+    ?string $name = "Luong Xuan Hieu",
+    ?string $mssv = "123456"
+) {
+    return view('sinhvien.index', [
+        'name' => $name,
+        'mssv' => $mssv
+    ]);
 });
 
 // Bàn cờ
