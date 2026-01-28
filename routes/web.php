@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Middleware\CheckTimeAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,19 +9,17 @@ Route::get('/', function () {
 });
 
 // Product
-Route::prefix('product')->group(function () {
-    // Matches The "/admin/users" URL
-    Route::get('/', function () {
-        return view('product.index');
-    })->name('product');
-
-    Route::get('/add', function () {
-        return view('product.add');
-    })->name('add');
-
-    Route::get('/{id?}', function (?string $id = "123") {
-        return view('product.product-detail', ['id' => $id]);
-    })->name('detail');
+Route::prefix('product')->middleware(CheckTimeAccess::class)->group(function () {
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/', 'index')->name('product');
+        Route::get('/add', 'create')->name('add');
+        Route::get('/detail/{id?}', 'getDetail')->name('detail');
+        Route::post('/store', 'store');
+        Route::get('/login', 'login');
+        Route::post('/checkLogin', 'checkLogin');
+        Route::get('/register', 'register');
+        Route::post('/checkRegister', 'checkRegister');
+    });
 });
 
 // Page Not Found
