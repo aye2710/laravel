@@ -7,12 +7,11 @@
 <body>
     <h2>NHẬP TUỔI</h2>
 
-    <form action="{{ url('/age/store') }}" method="POST">
+    <form action="{{ url('/check-age') }}" method="POST">
         @csrf
-        <p>
-            Tuổi:
-            <input type="text" name="age">
-        </p>
+        Tuổi:
+        <input type="text" name="age">
+        <br><br>
         <button type="submit">Gửi</button>
     </form>
 </body>

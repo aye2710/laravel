@@ -23,10 +23,11 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
 
 
 Route::get('/age', [AgeController::class, 'index']);
-Route::post('/age/store', [AgeController::class, 'store']);
+Route::post('/check-age', [AgeController::class, 'store']);
 
-Route::get('/age/check', [AgeController::class, 'check'])
-    ->middleware('check.age');
+Route::get('/home', function () {
+    return "Chào mừng bạn đủ 18 tuổi!";
+})->middleware('check.age');
 
 
 

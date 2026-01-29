@@ -15,14 +15,8 @@ class AgeController extends Controller
     {
         $age = $request->age;
 
-        // Lưu tuổi vào session
         session(['age' => $age]);
 
-        return redirect('/age/check');
-    }
-
-    public function check()
-    {
-        return "Bạn đủ tuổi để truy cập!";
+        return "Đã lưu tuổi vào session";
     }
 }
