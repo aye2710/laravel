@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckTimeAccess;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AgeController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,13 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::get('/signin', 'signIn')->name('signin');
     Route::post('/check-signin', 'checkSignIn')->name('check.signin');
 });
+
+
+Route::get('/age', [AgeController::class, 'index']);
+Route::post('/age/store', [AgeController::class, 'store']);
+
+Route::get('/age/check', [AgeController::class, 'check'])
+    ->middleware('check.age');
 
 
 
